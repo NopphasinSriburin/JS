@@ -1,0 +1,79 @@
+/* รีเซ็ต margin/padding ของ body และ html */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* สไตล์สำหรับ navbar */
+.navbar {
+  background-color: #333; /* สีพื้นหลัง */
+  color: white; /* สีตัวอักษร */
+  padding: 20px; /* Padding */
+  font-family: Arial, Helvetica, sans-serif; /* ฟอนต์ */
+  width: 100vw; /* ความกว้างเต็มหน้าจอ */
+  box-sizing: border-box; /* รวม padding ในขนาด */
+  margin: 0; /* ไม่มี margin */
+  position: relative; /* ถ้าไม่ต้องการให้ navbar ติดตามเมื่อเลื่อน */
+  top: 0;
+  
+}
+
+/* ถ้าต้องการให้ navbar ติดอยู่ด้านบนเมื่อเลื่อน ใช้แบบนี้แทน */
+.navbar.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* ป้องกันไม่ให้เนื้อหาถูกปิด */
+}
+
+.navbar-container {
+  display: flex; /* ใช้ flexbox */
+  justify-content: space-between; /* จัดให้มีพื้นที่ระหว่างซ้ายขวา */
+  align-items: center; /* จัดให้กลางแนวตั้ง */
+  width: 100%; /* ใช้ความกว้างเต็ม */
+  max-width: 1200px; /* กำหนดความกว้างสูงสุด */
+  margin: 0 auto; /* กึ่งกลาง */
+}
+
+.navbar-logo {
+  font-size: 1.5rem; /* ขนาดฟอนต์ของโลโก้ */
+  font-weight: bold; /* หนักของฟอนต์ */
+}
+
+.navbar-icon {
+  color: white; /* เปลี่ยนสีของไอคอนเป็นสีขาว */
+}
+
+
+/* สไตล์สำหรับรายการลิงค์ */
+.navbar-links {
+  display: flex; /* ใช้ flexbox */
+  align-items: center; /* จัดให้กลางแนวตั้ง */
+  gap: 1.5rem; /* ระยะห่างระหว่างลิงค์ */
+}
+
+/* สไตล์สำหรับปุ่มใน Navbar */
+.navbar-button {
+  background-color: transparent; /* ไม่มีสีพื้นหลัง */
+  color: white; /* สีตัวอักษร */
+  border: 2px solid transparent; /* กรอบปุ่มไม่มีสี */
+  padding: 10px 15px; /* ขนาด padding */
+  border-radius: 5px; /* มุมโค้ง */
+  cursor: pointer; /* เปลี่ยน cursor เป็น pointer */
+  font-size: 1rem; /* ขนาดฟอนต์ */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* เอฟเฟกต์การเปลี่ยนสี */
+  text-decoration: none; /* ไม่มีการขีดเส้นใต้ */
+}
+
+/* สไตล์เมื่อ hover */
+.navbar-button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* สีพื้นหลังเมื่อ hover */
+  color: #cccccc; /* เปลี่ยนสีตัวอักษรเมื่อ hover */
+  border-color: white; /* กรอบสีขาวเมื่อ hover */
+}
+
+/* สไตล์เมื่อปุ่มถูกคลิก */
+.navbar-button:active {
+  background-color: rgba(255, 255, 255, 0.2); /* สีพื้นหลังเมื่อคลิก */
+}
