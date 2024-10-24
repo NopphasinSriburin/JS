@@ -55,7 +55,6 @@ function RegisterPage() {
 
   return (
     <div>
-      <Navbar />
       <div className="register-container">
         <form className="register-form" onSubmit={handleSubmit}>
           <h1>Register</h1>
@@ -72,25 +71,25 @@ function RegisterPage() {
             </div>
           )}
 
-          <input
+          <input className="username"
             onChange={(e) => setName(e.target.value)}
             type="text"
             placeholder="Enter your Username"
             required
           />
-          <input
+          <input className="nameemail"
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Enter your Email"
             required
           />
-          <input
+          <input className="namepassword"
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Enter your Password"
             required
           />
-          <input
+          <input className="nameconfirmpassword"
             onChange={(e) => setConfirmPassword(e.target.value)}
             type="password"
             placeholder="Confirm your Password"

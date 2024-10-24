@@ -12,7 +12,7 @@ body, html {
 
 .hero {
     position: relative;
-    height: 91vh;
+    height: 100vh;
     background-image: url('1341443.png'); /* Replace with the actual image path */
     background-size: cover;
     background-position: center;

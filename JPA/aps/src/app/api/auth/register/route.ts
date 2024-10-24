@@ -34,16 +34,16 @@ export async function POST(request: Request) {
     // Hash password ก่อนบันทึกลงฐานข้อมูล
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // บันทึกข้อมูลผู้ใช้ใหม่ลงฐานข้อมูล
-    await usersCollection.insertOne({
+    // บันทึกข้อมูลผู้ใช้ใหม่ลงฐานข้อมูลและเก็บ _id
+    const result = await usersCollection.insertOne({
       name,
       email,
       password: hashedPassword, // เก็บ hashed password เพื่อความปลอดภัย
     });
 
-    // ส่งข้อความตอบกลับเมื่อการลงทะเบียนสำเร็จ
+    // ส่ง _id ที่ถูกสร้างกลับไปใน response
     return NextResponse.json(
-      { message: "User registered successfully!" },
+      { message: "User registered successfully!", id: result.insertedId },
       { status: 201 }
     );
   } catch (error) {

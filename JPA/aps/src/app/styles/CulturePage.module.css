@@ -1,5 +1,7 @@
 .container {
   padding: 20px;
+  background-color: #f9f9f9; /* Add a light background for contrast */
+  min-height: 100vh; /* Ensure the container covers the full height */
 }
 
 .header {
@@ -10,6 +12,7 @@
 .searchContainer {
   position: relative;
   display: inline-block;
+  margin-bottom: 15px; /* Add margin for better spacing */
 }
 
 .searchBar {
@@ -19,6 +22,13 @@
   font-size: 16px;
   border-radius: 20px;
   border: 1px solid #ddd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.searchBar:focus {
+  border-color: #e74c3c; /* Highlight border on focus */
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.5); /* Add shadow effect */
 }
 
 .searchIcon {
@@ -33,6 +43,22 @@
   margin-top: 15px;
   font-size: 24px;
   color: #444;
+  font-weight: 600; /* Make the title bolder */
+}
+
+.logoutButton {
+  background-color: #e74c3c; /* Change logout button color */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px; /* Add margin to separate from header */
+}
+
+.logoutButton:hover {
+  background-color: #c0392b; /* Darken button on hover */
 }
 
 .tabsSection {
@@ -92,20 +118,29 @@
   width: 100%;
   height: 180px;
   object-fit: cover;
+  border-bottom: 3px solid #e74c3c; /* Add a bottom border for aesthetics */
 }
 
 .cardContent {
   padding: 15px;
 }
 
+.cardTitle {
+  font-size: 20px; /* Increase font size for title */
+  color: #333; /* Darker title color */
+  margin-bottom: 5px; /* Add margin below title */
+}
+
+.cardLocation {
+  display: flex;
+  align-items: center; /* Center the location text */
+  color: #555; /* Change location text color */
+}
+
 .locationIcon {
   vertical-align: middle;
   color: #e74c3c;
   margin-right: 5px;
-}
-
-.cardContent p {
-  color: black; /* This will change the location text to black */
 }
 
 .error {

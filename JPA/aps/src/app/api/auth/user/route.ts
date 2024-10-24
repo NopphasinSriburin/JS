@@ -19,26 +19,27 @@ export async function GET() {
   }
 }
 
-// POST /api/users
+// POST - สร้างผู้ใช้ใหม่
+// POST - สร้างผู้ใช้ใหม่
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { username, email, password } = await request.json(); // ดึงข้อมูลจาก request body
 
-    // Check if email and password are provided
-    if (!email || !password) {
+    // ตรวจสอบว่า username, email, และ password มีอยู่หรือไม่
+    if (!username || !email || !password) {
       return NextResponse.json(
-        { message: "Email and password are required." },
+        { message: "Username, email, and password are required." },
         { status: 400 }
       );
     }
 
-    // Connect to MongoDB
+    // เชื่อมต่อกับ MongoDB
     await connectMongoDB();
     const db = mongoose.connection;
     const usersCollection = db.collection("users");
 
-    // Check if user already exists
-    const existingUser = await usersCollection.findOne({ email });
+    // ตรวจสอบว่าผู้ใช้นั้นมีอยู่แล้วหรือไม่
+    const existingUser = await usersCollection.findOne({ username });
     if (existingUser) {
       return NextResponse.json(
         { message: "User already exists." },
@@ -46,15 +47,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create new user (you might want to hash the password here)
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
-    const newUser = { email, password: hashedPassword, createdAt: new Date() };
+    // สร้างผู้ใช้ใหม่ (อย่าลืมแฮชรหัสผ่านที่นี่)
+    const hashedPassword = await bcrypt.hash(password, 10); // แฮชรหัสผ่าน
+    const newUser = { username, email, password: hashedPassword, createdAt: new Date() };
     await usersCollection.insertOne(newUser);
 
-    // Retrieve the newly created user without the password
+    // ดึงข้อมูลผู้ใช้ใหม่ที่สร้างขึ้นโดยไม่รวมรหัสผ่าน
     const createdUser = await usersCollection.findOne(
-      { email },
-      { projection: { password: 0 } } // Exclude the password from the response
+      { username },
+      { projection: { password: 0 } } // ไม่คืนค่ารหัสผ่านในผลลัพธ์
     );
 
     return NextResponse.json(createdUser, { status: 201 });
@@ -67,18 +68,17 @@ export async function POST(request: Request) {
   }
 }
 
-
-// PUT - อัปเดตข้อมูลผู้ใช้
+// PUT - อัปเดตข้อมูลผู้ใช้โดย username
 export async function PUT(request: Request) {
   try {
-    const { id, email, password } = await request.json(); // ดึงข้อมูลจาก request body
-    console.log('Request Body:', { id, email, password }); // เช็คข้อมูลที่ถูกส่งมา
+    const { username, email, password } = await request.json(); // ดึงข้อมูลจาก request body
+    console.log('Request Body:', { username, email, password }); // เช็คข้อมูลที่ถูกส่งมา
 
     await connectMongoDB(); // เชื่อมต่อ MongoDB
 
-    // ตรวจสอบว่า ID มีอยู่หรือไม่
-    if (!id) {
-      return NextResponse.json({ message: 'User ID is required' }, { status: 400 });
+    // ตรวจสอบว่า username มีอยู่หรือไม่
+    if (!username) {
+      return NextResponse.json({ message: 'Username is required' }, { status: 400 });
     }
 
     // เตรียมข้อมูลการอัปเดต
@@ -93,11 +93,15 @@ export async function PUT(request: Request) {
       updateData.password = hashedPassword; // อัปเดตรหัสผ่าน
     }
 
-    // อัปเดตข้อมูลผู้ใช้
-    const updatedUser = await User.findByIdAndUpdate(id, updateData, {
-      new: true, // ให้คืนค่าผลลัพธ์ที่อัปเดตใหม่
-      runValidators: true, // ตรวจสอบความถูกต้องของข้อมูล
-    });
+    // อัปเดตข้อมูลผู้ใช้โดยค้นหาจาก username
+    const updatedUser = await User.findOneAndUpdate(
+      { username }, // ค้นหาจาก username
+      updateData,
+      {
+        new: true, // ให้คืนค่าผลลัพธ์ที่อัปเดตใหม่
+        runValidators: true, // ตรวจสอบความถูกต้องของข้อมูล
+      }
+    );
 
     // ตรวจสอบว่าพบผู้ใช้หรือไม่
     if (!updatedUser) {
@@ -113,19 +117,19 @@ export async function PUT(request: Request) {
   }
 }
 
-// DELETE - ลบข้อมูลผู้ใช้
+// DELETE - ลบข้อมูลผู้ใช้โดย username
 export async function DELETE(request: Request) {
   try {
-    const { id } = await request.json(); // ดึงข้อมูลจาก request body
+    const { username } = await request.json(); // ดึงข้อมูลจาก request body
     await connectMongoDB(); // เชื่อมต่อกับ MongoDB
 
-    // ตรวจสอบว่า ID มีอยู่หรือไม่
-    if (!id) {
-      return NextResponse.json({ message: 'User ID is required' }, { status: 400 });
+    // ตรวจสอบว่า username มีอยู่หรือไม่
+    if (!username) {
+      return NextResponse.json({ message: 'Username is required' }, { status: 400 });
     }
 
-    // ลบผู้ใช้ที่มีอยู่โดยค้นหาตาม _id
-    const deletedUser = await User.findByIdAndDelete(id);
+    // ลบผู้ใช้ที่มีอยู่โดยค้นหาตาม username
+    const deletedUser = await User.findOneAndDelete({ username });
 
     // ตรวจสอบว่าพบผู้ใช้หรือไม่
     if (!deletedUser) {

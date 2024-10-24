@@ -29,10 +29,18 @@
   
   .settings-item {
     display: flex;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #e0e0e0;
+    align-items: center; /* จัดแนวให้แน่ใจว่าปรับให้ตรงกลาง */
+    padding: 10px; /* เพิ่ม padding ถ้าต้องการ */
+    cursor: pointer; /* แสดงว่าเป็นลิงก์ */
+    text-decoration: none; /* ลบเส้นใต้ */
+    color: inherit; /* ใช้สีข้อความตามค่าเริ่มต้น */
+    border: none; /* ลบเส้นขอบ */
   }
+  
+  .settings-item:hover {
+    background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังเมื่อวางเมาส์ */
+  }
+  
   
   .settings-item:last-child {
     border-bottom: none;
